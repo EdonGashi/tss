@@ -90,3 +90,112 @@ workbook sheet$1 {
 console.log('Finished processing document')
 ?>
 ```
+
+An example stylesheet used in production, which normalizes the look of some tables.
+
+```
+table {
+  vertical-alignment: center;
+  horizontal-alignment: center;
+  text-wrap: false;
+  border-top-style: thin;
+  border-right-style: thin;
+  border-bottom-style: thin;
+  border-left-style: thin;
+  border-top-color: black;
+  border-right-color: #FFAAAAAA;
+  border-bottom-color: black;
+  border-left-color: #FFAAAAAA;
+  font-bold: false;
+  font-size: 16;
+  font-name: Arial;
+
+  tr {
+    height: 23.25;
+  }
+
+  thead {
+    tr$1 {
+      border-top-color: black;
+      border-top-style: medium;
+    }
+
+    tr$last {
+      border-bottom-color: black;
+      border-bottom-style: medium;
+    }
+  }
+
+  tbody {
+    tr$1 {
+      border-top-color: black;
+      border-top-style: medium;
+    }
+
+    tr$last {
+      border-bottom-color: black;
+      border-bottom-style: medium;
+    }
+  }
+
+  td$1 {
+    border-left-color: black;
+    border-left-style: medium;
+  }
+
+  td$last {
+    border-right-color: black;
+    border-right-style: medium;
+  }
+}
+
+table.title {
+  thead tr$1 {
+    td$1 {
+      font-size: 20;
+    }
+
+    font-bold: true;
+    height: 45;
+    wrap-text: true;
+  }
+
+  &$1 thead tr$1 td$1 {
+    fill: black;
+    font-color: white;
+  }
+}
+
+table!.title {
+  font-size: 18;
+
+  thead {
+    font-bold: true;
+    fill: #FFF0F0F0;
+  }
+
+  tbody {
+    tr$odd {
+      font-bold: true;
+    }
+  }
+}
+
+collection {
+  <? let merges ?>
+
+  table {
+    &.title {
+      <? merges = new Set() ?>
+      td<? this.columnSpan > 1 ?> {
+        <? merges.add(this.number) ?>
+      }
+    }
+
+    td<? merges.has(this.number) ?> {
+      border-left-style: medium;
+      border-left-color: black;
+    }
+  }
+}
+```
